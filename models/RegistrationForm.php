@@ -7,14 +7,14 @@ use yii\base\Model;
 
 class RegistrationForm extends Model
 {
-    public string $email        = ''; //Email
-    public string $password     = ''; //Пароль
-    public string $surname      = ''; //Фамилия
-    public string $first_name   = ''; //Имя
-    public int $age             = 0; //Возраст
-    public int $sex             = 0; //Пол
-    public string $interests    = ''; //Интересы
-    public string $city         = ''; //Город
+    public $email        = ''; //Email
+    public $password     = ''; //Пароль
+    public $surname      = ''; //Фамилия
+    public $first_name   = ''; //Имя
+    public $age             = 0; //Возраст
+    public $sex             = 0; //Пол
+    public $interests    = ''; //Интересы
+    public $city         = ''; //Город
 
     /**
      * {@inheritdoc}

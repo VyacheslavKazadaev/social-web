@@ -26,9 +26,7 @@ use yii\bootstrap\ActiveForm;
         <?= $form->field($model, 'city')->textInput() ?>
         <?= $form->field($model, 'interests')->textarea() ?>
         <?= $form->field($model, 'age')->textInput() ?>
-        <?= $form->field($model, 'sex')->dropDownList(
-            ['М', 'Ж'],
-        ) ?>
+        <?= $form->field($model, 'sex')->dropDownList(['М', 'Ж']) ?>
 
         <div class="form-group">
             <?= Html::submitButton('Создать', ['class' => 'btn btn-primary']) ?>
