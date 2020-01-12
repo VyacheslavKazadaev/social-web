@@ -7,10 +7,16 @@ use yii\web\Controller;
 class BaseController extends Controller
 {
 
+    /**
+     * @param \yii\base\Action $action
+     * @return bool
+     * @throws \yii\web\BadRequestHttpException
+     */
     public function beforeAction($action)
     {
         if (Yii::$app->user->isGuest) {
-            return $this->goLogin();
+            $this->goLogin();
+            return false;
         }
 
         return parent::beforeAction($action);
