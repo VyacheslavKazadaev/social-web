@@ -2,25 +2,33 @@
 
 namespace app\models;
 
+use Yii;
+
 class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
 {
-    public $id;
-    public $username;
-    public $password;
-    public $authKey;
-    public $accessToken;
+    public $id         ; //ID
+    public $email      ; //Email
+    public $password   ; //Пароль
+    public $surname    ; //Фамилия
+    public $first_name ; //Имя
+    public $age        ; //Возраст
+    public $sex        ; //Пол
+    public $interests  ; //Интересы
+    public $city       ; //Город
+    public $auth_key   ;
+    public $access_token;
 
     private static $users = [
         '100' => [
             'id' => '100',
-            'username' => 'admin',
+            'email' => 'admin',
             'password' => 'admin',
             'authKey' => 'test100key',
             'accessToken' => '100-token',
         ],
         '101' => [
             'id' => '101',
-            'username' => 'demo',
+            'email' => 'demo',
             'password' => 'demo',
             'authKey' => 'test101key',
             'accessToken' => '101-token',
@@ -33,7 +41,11 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
      */
     public static function findIdentity($id)
     {
-        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
+        $user = Yii::$app->db->createCommand('SELECT * FROM user WHERE id=:id')
+            ->bindValue(':id', $id)
+            ->queryOne();
+
+        return $user ? new static($user) : null;
     }
 
     /**
@@ -41,30 +53,25 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        foreach (self::$users as $user) {
-            if ($user['accessToken'] === $token) {
-                return new static($user);
-            }
-        }
-
-        return null;
+        $user = Yii::$app->db->createCommand('SELECT * FROM user WHERE access_token=:accessToken')
+            ->bindValue(':accessToken', $token)
+            ->queryOne();
+        return $user ? new static($user) : null;
     }
 
     /**
      * Finds user by username
      *
-     * @param string $username
+     * @param string $email
      * @return static|null
+     * @throws \yii\db\Exception
      */
-    public static function findByUsername($username)
+    public static function findByEmail($email)
     {
-        foreach (self::$users as $user) {
-            if (strcasecmp($user['username'], $username) === 0) {
-                return new static($user);
-            }
-        }
-
-        return null;
+        $user = Yii::$app->db->createCommand('SELECT * FROM user WHERE email=:email')
+            ->bindValue(':email', $email)
+            ->queryOne();
+        return $user ? new static($user) : null;
     }
 
     /**
@@ -80,7 +87,7 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
      */
     public function getAuthKey()
     {
-        return $this->authKey;
+        return $this->auth_key;
     }
 
     /**
@@ -88,7 +95,7 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
      */
     public function validateAuthKey($authKey)
     {
-        return $this->authKey === $authKey;
+        return $this->auth_key === $authKey;
     }
 
     /**
@@ -96,9 +103,23 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
      *
      * @param string $password password to validate
      * @return bool if password provided is valid for current user
+     * @throws \yii\base\Exception
      */
     public function validatePassword($password)
     {
-        return $this->password === $password;
+        return Yii::$app->security->validatePassword($password, $this->password);
+    }
+
+    /**
+     * @param $data
+     * @return User
+     * @throws \yii\base\Exception
+     * @throws \yii\db\Exception
+     */
+    public static function create($data)
+    {
+        $data['password'] = Yii::$app->security->generatePasswordHash($data['password']);
+        Yii::$app->db->createCommand()->insert('user', $data)->execute();
+        return new static(static::findByEmail($data['email']));
     }
 }

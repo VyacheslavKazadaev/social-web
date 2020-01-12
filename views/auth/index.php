@@ -16,18 +16,18 @@ $this->title = 'Login SocialWeb';
         'id' => 'login-form',
         'layout' => 'horizontal',
         'options' => [
-            'class' => 'form-signin panel',
+            'class' => 'form-auth',
         ],
         'fieldConfig' => [
-            'template' => "{label}\n{input}\n<div class=\"col-lg-8\">{error}</div>",
+            'template' => "{label}\n{input}\n<div class=\"\">{error}</div>",
             'labelOptions' => ['class' => 'sr-only'],
 
         ],
     ]); ?>
 
-    <?= $form->field($model, 'username')->textInput(['placeholder' => 'Username', 'autofocus' => true]) ?>
+    <?= $form->field($model, 'email')->textInput(['placeholder' => 'Email', 'autofocus' => true]) ?>
 
-    <?= $form->field($model, 'password')->passwordInput(['placeholder' => 'Password',]) ?>
+    <?= $form->field($model, 'password')->passwordInput(['placeholder' => 'Пароль',]) ?>
 
     <?= $form->field($model, 'rememberMe')->checkbox([
         'template' => "<div class=\"checkbox mb-3\">{input} {label}</div>\n<div class=\"col-lg-8\">{error}</div>",
@@ -35,7 +35,8 @@ $this->title = 'Login SocialWeb';
 
     <?= Html::submitButton('Login', ['class' => 'btn btn-lg btn-primary', 'name' => 'login-button']) ?>
     <?php ActiveForm::end(); ?>
-    <?= Html::a('Registration', '', []) ?>
     <p class="mt-5 mb-3 text-muted">© 2020</p>
+    <hr>
+    <?= Html::a('Registration', 'auth/registration', []) ?>
     </div>
 </div>

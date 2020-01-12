@@ -114,7 +114,13 @@ a.desc:after {
     outline: none;
 }
 
-.form-signin {
+.form-auth {
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+}
+.form-reg {
     width: 100%;
     max-width: 330px;
     padding: 15px;
