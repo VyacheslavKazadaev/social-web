@@ -133,3 +133,6 @@ a.desc:after {
 .navbar-toggle {
     color: darkblue;
 }
+.navbar-toggle {
+    padding: 0;
+}

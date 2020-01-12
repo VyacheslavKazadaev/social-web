@@ -27,31 +27,36 @@ AppAsset::register($this);
 <?php $this->beginBody() ?>
 
 <div class="wrap">
-    <?php
-    NavBar::begin([
-        'brandLabel' => Yii::$app->name,
-        'brandUrl' => Yii::$app->homeUrl,
-        'options' => [
-            'class' => 'navbar-fixed-top navbar-dark bg-primary',
-        ],
-    ]);
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => [
-            Yii::$app->user->isGuest ? '' : (
-                '<li>'
+    <nav id="w0" class="navbar-fixed-top navbar-dark bg-primary navbar">
+        <div class="container">
+            <div class="navbar-header">
+                <?=
+                '<div class="navbar-toggle">'
                 . Html::beginForm(['/site/logout'], 'post')
                 . Html::submitButton(
-                    'Logout (' . Yii::$app->user->identity->email . ')',
+                    'Logout ',
                     ['class' => 'btn btn-link logout']
                 )
                 . Html::endForm()
-                . '</li>'
-            )
-        ],
-    ]);
-    NavBar::end();
-    ?>
+                . '</div>'
+                ?>
+                <a class="navbar-brand" href="/">Social-Web</a></div>
+            <div id="w0-collapse" class="navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
+                <ul id="w1" class="navbar-nav navbar-right nav">
+                    <?=
+                    '<li>'
+                    . Html::beginForm(['/site/logout'], 'post')
+                    . Html::submitButton(
+                        'Logout (' . Yii::$app->user->identity->email . ')',
+                        ['class' => 'btn btn-link logout']
+                    )
+                    . Html::endForm()
+                    . '</li>'
+                    ?>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
     <div class="container">
         <?= $content ?>
