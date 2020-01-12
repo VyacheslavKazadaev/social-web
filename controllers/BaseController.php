@@ -16,6 +16,18 @@ class BaseController extends Controller
         return parent::beforeAction($action);
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function actions()
+    {
+        return [
+            'error' => [
+                'class' => 'yii\web\ErrorAction',
+            ],
+        ];
+    }
+
     public function goLogin()
     {
         return Yii::$app->getResponse()->redirect(Yii::$app->getHomeUrl() . 'auth');

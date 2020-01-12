@@ -119,6 +119,7 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
     public static function create($data)
     {
         $data['password'] = Yii::$app->security->generatePasswordHash($data['password']);
+        $data['auth_key'] = Yii::$app->security->generateRandomString();
         Yii::$app->db->createCommand()->insert('user', $data)->execute();
         return new static(static::findByEmail($data['email']));
     }

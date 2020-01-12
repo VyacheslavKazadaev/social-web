@@ -13,9 +13,6 @@ use yii\bootstrap\ActiveForm;
     <?php $form = ActiveForm::begin([
         'id' => 'sing-up-form',
         'layout' => 'horizontal',
-        'options' => [
-            'class' => 'form-req',
-        ],
 //        'fieldConfig' => [
 //            'template' => "{label}\n{input}\n<div class=\"col-lg-8\">{error}</div>",
 //            'labelOptions' => ['class' => 'col-md-12'],
