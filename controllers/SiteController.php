@@ -2,12 +2,12 @@
 
 namespace app\controllers;
 
+use app\models\User;
+use app\lib\services\PagesUserService;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Response;
 use yii\filters\VerbFilter;
-use app\models\LoginForm;
-use app\models\ContactForm;
 
 class SiteController extends BaseController
 {
@@ -45,8 +45,14 @@ class SiteController extends BaseController
      */
     public function actionIndex()
     {
-        $model = Yii::$app->user->getIdentity();
-        return $this->render('index', compact('model'));
+        $pages = (new PagesUserService())->findListPages(10);
+        return $this->render('index', compact('pages'));
+    }
+
+    public function actionPage($id)
+    {
+        $model = User::findIdentity($id);
+        return $this->render('page', compact('model'));
     }
 
     /**
@@ -57,7 +63,6 @@ class SiteController extends BaseController
     public function actionLogout()
     {
         Yii::$app->user->logout();
-
-        return $this->goLogin();
+        return $this->goHome();
     }
 }

@@ -1,17 +1,22 @@
 <?php
 
 /* @var $this yii\web\View
- * @var $model \app\models\User
+ * @var $pages array
  */
 
 use yii\helpers\Html; ?>
 
-<div>
-    <p>Ваш Email: <strong><?= Html::encode($model->email) ?></strong></p><hr>
-    <p>Ваша Фамилия: <strong ><?= Html::encode($model->surname) ?></strong></p><hr>
-    <p>Ваше Имя: <strong ><?= Html::encode($model->first_name) ?></strong></p><hr>
-    <p>Ваш Город: <strong ><?= Html::encode($model->city) ?></strong></p><hr>
-    <p>Ваш Интересы: <strong ><?= Html::encode($model->interests) ?></strong></p><hr>
-    <p>Ваши Возраст: <strong ><?= Html::encode($model->age) ?></strong></p><hr>
-    <p>Ваш Пол: <strong><?= Html::encode($model->sex) ? 'Мужской' : 'Женский' ?></strong></p>
+<?php foreach ($pages as $key => $page): ?>
+<?php if (($key % 3) == 0):?>
+<div class="row">
+<?php endif; ?>
+    <div class="col-sm-3 pageuser text-center">
+        <img src="/img/avatar_2x.png" class="img-thumbnail"/>
+        <p><?= $page['first_name'] . ' ' . $page['surname'] ?></p>
+        <p>Город: <?= $page['city'] . ' ' . $page['surname'] ?></p>
+        <a class="btn btn-success" href="<?= \yii\helpers\Url::to(['site/page', 'id' => $page['id']]) ?>">Просмотр</a>
+    </div>
+<?php if (($key % 3) == 2):?>
 </div>
+<?php endif; ?>
+<?php endforeach; ?>

@@ -18,24 +18,6 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
     public $auth_key   ;
     public $access_token;
 
-    private static $users = [
-        '100' => [
-            'id' => '100',
-            'email' => 'admin',
-            'password' => 'admin',
-            'authKey' => 'test100key',
-            'accessToken' => '100-token',
-        ],
-        '101' => [
-            'id' => '101',
-            'email' => 'demo',
-            'password' => 'demo',
-            'authKey' => 'test101key',
-            'accessToken' => '101-token',
-        ],
-    ];
-
-
     /**
      * {@inheritdoc}
      */

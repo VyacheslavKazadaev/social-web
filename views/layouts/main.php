@@ -30,39 +30,47 @@ AppAsset::register($this);
     <nav id="w0" class="navbar-fixed-top navbar-dark bg-primary navbar">
         <div class="container">
             <div class="navbar-header">
-                <?php if(Yii::$app->user->isGuest): ?>
+                <div class="navbar-toggle">
+                <?php if(!Yii::$app->user->isGuest): ?>
                 <?=
-                '<div class="navbar-toggle">'
-                . Html::beginForm(['/site/logout'], 'post')
+                  Html::beginForm(['/site/logout'], 'post')
                 . Html::submitButton(
-                    'Logout ',
+                    '<i class="fas fa-sign-out-alt fa-2x"></i>',
                     ['class' => 'btn btn-link logout']
                 )
                 . Html::endForm()
-                . '</div>'
                 ?>
                 <?php else: ?>
-                    <i class="fa fa-sign fa-2x"></i>
+                    <a href="<?= \yii\helpers\Url::to(['/auth']) ?>" title="Войти"><i class="fa fa-sign-in-alt fa-2x"></i></a>
                 <?php endif; ?>
-                <a class="navbar-brand" href="/">Social-Web</a></div>
+                </div>
+                <a class="navbar-brand" href="/">Social-Web</a>
+            </div>
             <div id="w0-collapse" class="navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
                 <ul id="w1" class="navbar-nav navbar-right nav">
-                    <?=
-                    '<li>'
-                    . Html::beginForm(['/site/logout'], 'post')
-                    . Html::submitButton(
-                        'Logout (' . Yii::$app->user->identity->email . ')',
-                        ['class' => 'btn btn-link logout']
-                    )
-                    . Html::endForm()
-                    . '</li>'
-                    ?>
+
+                    <li>
+                        <?php if(!Yii::$app->user->isGuest): ?>
+                        <?=
+                          Html::beginForm(['/site/logout'], 'post')
+                        . Html::submitButton(
+                            '<i class="fas fa-sign-out-alt fa-2x"></i> (' . Yii::$app->user->identity->email . ')',
+                            ['class' => 'btn btn-link logout']
+                        )
+                        . Html::endForm()
+                        ?>
+                        <?php else: ?>
+                            <a href="<?= \yii\helpers\Url::to(['/auth']) ?>" title="Войти"><i class="fa fa-sign-in-alt fa-2x"></i></a>
+                        <?php endif; ?>
+                    </li>
                 </ul>
             </div>
+
         </div>
     </nav>
 
     <div class="container">
+        <div class="panel"><a href="<?= \yii\helpers\Url::to(['/site/page', 'id' => Yii::$app->user->getId()]) ?>" >Моя страница</a></div>
         <?= $content ?>
     </div>
 </div>
