@@ -1,9 +1,64 @@
-version: '2'
+# Версия docker-compose
+version: '3.7'
+# Список наших сервисов (контейнеров)
 services:
-  php:
-    image: yiisoftware/yii2-php:7.1-apache
-    volumes:
-      - ~/.composer-docker/cache:/root/.composer/cache:delegated
-      - ./:/app:delegated
+  nginx:
+    # используем последний стабильный образ nginx
+    image: nginx:latest
+    # маршрутизируем порты
     ports:
-      - '8000:80'
+      - "82:80"
+    # монтируем директории, слева директории на основной машине, справа - куда они монтируются в контейнере
+    volumes:
+      - ./docker/hosts:/etc/nginx/conf.d
+      - ./docker/hosts/fastcgi.conf:/etc/nginx/fastcgi.conf
+      - ./:/var/www
+      - ./docker/logs:/var/log/nginx
+    # nginx должен общаться с php контейнером
+    links:
+      - php_soc_cl
+    networks:
+      - internal
+    depends_on:
+      - php_soc_cl
+      - mariadb
+  php_soc_cl:
+    # у нас свой образ для PHP, указываем путь к нему и говорим что его надо собрать
+    build: ./docker/images/php
+    container_name: php_soc_cl
+    # этот образ будет общаться с mysql
+    links:
+      - mariadb
+    # монтируем директорию с проектами
+    volumes:
+      - ./:/var/www
+    environment:
+      XDEBUG_CONFIG: "remote_host=192.168.210.1 remote_enable=1"
+      PHP_IDE_CONFIG: "serverName=Docker"
+      TZ: Europe/Moscow
+    networks:
+      - internal
+  mariadb:
+    image: mariadb:10.4
+    ports:
+      - "3308:3306"
+    volumes:
+      - ./docker/mysql:/var/lib/mysql
+      - ./docker/mysql_dump:/docker-entrypoint-initdb.d
+      - ./docker/images/mysql:/etc/mysql/conf.d
+    # задаем пароль для root пользователя
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user_password
+      MYSQL_DATABASE: social_web
+      TZ: Europe/Moscow
+    networks:
+      - internal
+networks:
+  internal:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.210.0/28
