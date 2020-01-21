@@ -4,14 +4,14 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "eb66231ccd835040d10dff19eca54927",
+    "content-hash": "efa643d8421ecffbd73b21ba64845c65",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
             "version": "v3.4.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/twbs/bootstrap.git",
+                "url": "git@github.com:twbs/bootstrap.git",
                 "reference": "68b0d231a13201eb14acd3dc84e51543d16e5f7e"
             },
             "dist": {
@@ -28,11 +28,26 @@
             ]
         },
         {
+            "name": "bower-asset/font-awesome",
+            "version": "5.12.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/FortAwesome/Font-Awesome.git",
+                "reference": "d8db3d032d22e7a5e21f3b40905b7867be19bb02"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/FortAwesome/Font-Awesome/zipball/d8db3d032d22e7a5e21f3b40905b7867be19bb02",
+                "reference": "d8db3d032d22e7a5e21f3b40905b7867be19bb02"
+            },
+            "type": "bower-asset"
+        },
+        {
             "name": "bower-asset/inputmask",
             "version": "3.3.11",
             "source": {
                 "type": "git",
-                "url": "https://github.com/RobinHerbots/Inputmask.git",
+                "url": "git@github.com:RobinHerbots/Inputmask.git",
                 "reference": "5e670ad62f50c738388d4dcec78d2888505ad77b"
             },
             "dist": {
@@ -86,7 +101,7 @@
             "version": "2.0.7.1",
             "source": {
                 "type": "git",
-                "url": "git@github.com:yiisoft/jquery-pjax.git",
+                "url": "https://github.com/yiisoft/jquery-pjax.git",
                 "reference": "aef7b953107264f00234902a3880eb50dafc48be"
             },
             "dist": {

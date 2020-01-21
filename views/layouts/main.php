@@ -30,6 +30,7 @@ AppAsset::register($this);
     <nav id="w0" class="navbar-fixed-top navbar-dark bg-primary navbar">
         <div class="container">
             <div class="navbar-header">
+                <?php if(Yii::$app->user->isGuest): ?>
                 <?=
                 '<div class="navbar-toggle">'
                 . Html::beginForm(['/site/logout'], 'post')
@@ -40,6 +41,9 @@ AppAsset::register($this);
                 . Html::endForm()
                 . '</div>'
                 ?>
+                <?php else: ?>
+                    <i class="fa fa-sign fa-2x"></i>
+                <?php endif; ?>
                 <a class="navbar-brand" href="/">Social-Web</a></div>
             <div id="w0-collapse" class="navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
                 <ul id="w1" class="navbar-nav navbar-right nav">
