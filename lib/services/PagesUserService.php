@@ -9,7 +9,7 @@ class PagesUserService extends BaseObject
 {
     public function findListPages(int $length): array
     {
-        return (new Query())->select(['id', 'first_name', 'surname', 'city'])
+        return (new Query())->select(['id', 'first_name', 'surname', 'city', 'auth_key'])
             ->from('user')
             ->limit($length)
             ->all();

@@ -15,10 +15,10 @@ class GenDataController extends Controller
      * @throws \yii\db\Exception
      * @throws \yii\base\Exception
      */
-    public function actionIndex($count)
+    public function actionIndex($count, $step)
     {
         $faker = Factory::create();
-        $step = 500;
+//        $step = 500;
         do {
             $step = $step <= $count ? $step : $count;
             $rows = [];
@@ -29,7 +29,7 @@ class GenDataController extends Controller
             Yii::$app->db->createCommand()->batchInsert('user', [
                 'email'        ,
                 'password'     ,
-//                'auth_key'     ,
+                'auth_key'     ,
                 'surname'      ,
                 'first_name'   ,
                 'age'          ,
@@ -66,7 +66,7 @@ class GenDataController extends Controller
             $rows = [
                 $faker->email,
                 Yii::$app->getSecurity()->generatePasswordHash(1),
-//                \Yii::$app->getSecurity()->generateRandomString(5),
+                \Yii::$app->getSecurity()->generateRandomString(10),
                 $faker->name,
                 $faker->firstName,
                 $faker->numberBetween(0, 100),

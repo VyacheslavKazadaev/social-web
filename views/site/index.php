@@ -14,7 +14,7 @@ use yii\helpers\Html; ?>
         <img src="/img/avatar_2x.png" class="img-thumbnail"/>
         <p><?= $page['first_name'] . ' ' . $page['surname'] ?></p>
         <p>Город: <?= $page['city'] . ' ' . $page['surname'] ?></p>
-        <a class="btn btn-success" href="<?= \yii\helpers\Url::to(['site/page', 'id' => $page['id']]) ?>">Просмотр</a>
+        <a class="btn btn-success" href="<?= \yii\helpers\Url::to(['site/page', 'id' => $page['auth_key']]) ?>">Просмотр</a>
     </div>
 <?php if (($key % 3) == 2):?>
 </div>

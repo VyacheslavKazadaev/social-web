@@ -56,6 +56,14 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
         return $user ? new static($user) : null;
     }
 
+    public static function findByAuthKey($authKey)
+    {
+        $user = Yii::$app->db->createCommand('SELECT * FROM user WHERE auth_key=:auth_key')
+            ->bindValue(':auth_key', $authKey)
+            ->queryOne();
+        return $user ? new static($user) : null;
+    }
+
     /**
      * {@inheritdoc}
      */
