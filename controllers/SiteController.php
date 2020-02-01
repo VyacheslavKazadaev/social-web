@@ -51,7 +51,7 @@ class SiteController extends BaseController
 
     public function actionPage($id)
     {
-        $model = User::findByAuthKey($id);
+        $model = User::findIdentity($id);
         return $this->render('page', compact('model'));
     }
 
