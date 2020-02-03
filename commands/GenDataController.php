@@ -11,14 +11,24 @@ class GenDataController extends Controller
 {
     /**
      * @param $count
+     * @param $step
      * @return int
-     * @throws \yii\db\Exception
      * @throws \yii\base\Exception
+     * @throws \yii\db\Exception
      */
     public function actionIndex($count, $step)
     {
         $faker = Factory::create();
-//        $step = 500;
+        $columns = [
+            'email'        ,
+            'password'     ,
+            'surname'      ,
+            'first_name'   ,
+            'age'          ,
+            'sex'          ,
+            'interests'    ,
+            'city'         ,
+        ];
         do {
             $step = $step <= $count ? $step : $count;
             $rows = [];
@@ -26,17 +36,7 @@ class GenDataController extends Controller
                 $rows[] = $row;
             }
 
-            Yii::$app->db->createCommand()->batchInsert('user', [
-                'email'        ,
-                'password'     ,
-                'auth_key'     ,
-                'surname'      ,
-                'first_name'   ,
-                'age'          ,
-                'sex'          ,
-                'interests'    ,
-                'city'         ,
-            ], $rows)->execute();
+            Yii::$app->db->createCommand()->batchInsert('user', $columns, $rows)->execute();
             $count -= $step;
             echo "count: $step\n";
         } while($count >= $step);
@@ -63,20 +63,19 @@ class GenDataController extends Controller
     protected function genRecord(Generator $faker, $count)
     {
         while ($count !== 0) {
-            $rows = [
-                $faker->email,
-                Yii::$app->getSecurity()->generatePasswordHash(1),
-                \Yii::$app->getSecurity()->generateRandomString(10),
-                $faker->name,
+            $row = [
+                'test@test.com',
+                '$2y$13$VhkbB/erFT1Y8jULlqXDG.93BVrjhYLpCeOZoDBx0hM7HDvInMScO',
+                $faker->lastName,
                 $faker->firstName,
-                $faker->numberBetween(0, 100),
-                (int)$faker->boolean,
-                $faker->sentence(),
-                $faker->city,
+                30,
+                0,
+                'Interests',
+                'Moscow',
             ];
 
             --$count;
-            yield $rows;
+            yield $row;
         }
     }
 }
