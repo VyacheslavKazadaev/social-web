@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\User;
 use app\lib\services\PagesUserService;
 use Yii;
+use yii\db\Query;
 use yii\filters\AccessControl;
 use yii\web\Response;
 use yii\filters\VerbFilter;
@@ -45,7 +46,13 @@ class SiteController extends BaseController
      */
     public function actionIndex()
     {
-        $pages = (new PagesUserService())->findListPages(10);
+        $pages = (new PagesUserService())->findPagesByQuery( 10);
+        return $this->render('index', compact('pages'));
+    }
+
+    public function actionSearch($q)
+    {
+        $pages = (new PagesUserService())->findPagesByQuery( 10, $q);
         return $this->render('index', compact('pages'));
     }
 

@@ -7,11 +7,17 @@ use yii\db\Query;
 
 class PagesUserService extends BaseObject
 {
-    public function findListPages(int $length): array
+    public function findPagesByQuery($length, $q = null): array
     {
-        return (new Query())->select(['id', 'first_name', 'surname', 'city', 'auth_key'])
-            ->from('user')
+        $query = (new Query())->select(['id', 'first_name', 'surname', 'city', 'auth_key'])
+            ->from('user');
+        if (!empty($q)) {
+            $query->where(['or', ['like', 'first_name', $q . '%', false], ['like', 'surname', $q . '%', false]]);
+        }
+        return $query
             ->limit($length)
+            ->orderBy('id')
             ->all();
     }
+
 }
