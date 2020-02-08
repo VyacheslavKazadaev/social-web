@@ -16,7 +16,29 @@ class PagesUserService extends BaseObject
         }
         return $query
             ->limit($length)
-            ->orderBy('id')
+            ->orderBy('first_name')
+            ->all();
+    }
+
+    public function findPagesByQueryUnion($length, $q): array
+    {
+
+        $queryOne = (new Query())->select(['id', 'first_name', 'surname', 'city', 'auth_key'])
+            ->from('user')
+            ->where(['like', 'first_name', $q . '%', false])
+
+            ->limit($length)
+        ;
+        $queryTwo = (new Query())->select(['id', 'first_name', 'surname', 'city', 'auth_key'])
+            ->from('user')
+            ->where(['like', 'surname', $q . '%', false])
+
+            ->limit($length)
+        ;
+        $queryOne->union($queryTwo);
+        return (new Query())->select('*')
+            ->from($queryOne)
+            ->orderBy('first_name')
             ->all();
     }
 
