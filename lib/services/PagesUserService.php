@@ -53,5 +53,9 @@ class PagesUserService extends BaseObject
             ->limit(500)
             ->all(), 'iduser');
     }
+    public function renderNews($id)
+    {
+
+    }
 
 }

@@ -80,6 +80,12 @@ class SiteController extends BaseController
         return $this->render('page', compact('model', 'messages'));
     }
 
+    public function actionNews($id)
+    {
+        $news = (new PagesUserService())->renderNews($id);
+        return $this->render('index', compact('news'));
+    }
+
     public function actionSubscribe()
     {
         $id = Yii::$app->request->post('id');
