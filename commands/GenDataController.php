@@ -71,7 +71,7 @@ class GenDataController extends Controller
                 30,
                 0,
                 'Interests',
-                'Moscow',
+                $faker->city,
             ];
 
             --$count;
