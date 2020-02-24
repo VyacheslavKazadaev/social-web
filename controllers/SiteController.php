@@ -15,28 +15,28 @@ class SiteController extends BaseController
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
-    {
-        return [
-            'access' => [
-                'class' => AccessControl::class,
-                'only' => ['logout'],
-                'rules' => [
-                    [
-                        'actions' => ['logout'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::class,
-                'actions' => [
-                    'logout' => ['post'],
-                ],
-            ],
-        ];
-    }
+//    public function behaviors()
+//    {
+//        return [
+//            'access' => [
+//                'class' => AccessControl::class,
+//                'only' => ['logout'],
+//                'rules' => [
+//                    [
+//                        'actions' => ['logout'],
+//                        'allow' => true,
+//                        'roles' => ['@'],
+//                    ],
+//                ],
+//            ],
+//            'verbs' => [
+//                'class' => VerbFilter::class,
+//                'actions' => [
+//                    'logout' => ['post'],
+//                ],
+//            ],
+//        ];
+//    }
 
     /**
      * Displays homepage.
@@ -58,8 +58,30 @@ class SiteController extends BaseController
 
     public function actionPage($id)
     {
+        $post = Yii::$app->request->post();
+        if (isset($post['submit-message'])) {
+            Yii::$app->db->createCommand()->insert('posts', [
+                'message' => $post['message'],
+                'iduser' => $id,
+            ])->execute();
+
+            Yii::$app->response->redirect(Yii::$app->request->getReferrer());
+        }
+
         $model = User::findIdentity($id);
-        return $this->render('page', compact('model'));
+        $messages = (new Query())
+            ->select('message')
+            ->from('posts')
+            ->where(['iduser' => $id])
+            ->all()
+        ;
+        return $this->render('page', compact('model', 'messages'));
+    }
+
+    public function actionSubscribe()
+    {
+        $id = Yii::$app->request->post('id');
+        $this->renderContent(json_encode(['yes' => $id]));
     }
 
     /**

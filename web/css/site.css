@@ -146,3 +146,16 @@ a.desc:after {
     padding: 10px;
     margin: 0 5px 5px;
 }
+
+.message-edit-block {
+    background-color: #ddd;
+    padding: 15px 0;
+    border-radius: 10px;
+}
+
+.message-block {
+    padding: 15px 0;
+    border-radius: 5px;
+    border: solid lightgrey 1px;
+    box-shadow: 5px -5px 5px #CCC;
+}
