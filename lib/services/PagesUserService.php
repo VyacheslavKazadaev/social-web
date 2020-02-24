@@ -16,7 +16,7 @@ class PagesUserService extends BaseObject
         }
         return $query
             ->limit($length)
-            ->orderBy('first_name')
+            ->orderBy('id')
             ->all();
     }
 
@@ -40,6 +40,18 @@ class PagesUserService extends BaseObject
             ->from($queryOne)
             ->orderBy('first_name')
             ->all();
+    }
+
+    public function findSubscribeUsers($id)
+    {
+        if (!$id) {
+            return null;
+        }
+        return array_column((new Query())->select(['iduser'])
+            ->from('subscriber')
+            ->where(['idsubscriber' => $id])
+            ->limit(500)
+            ->all(), 'iduser');
     }
 
 }

@@ -15,28 +15,28 @@ class SiteController extends BaseController
     /**
      * {@inheritdoc}
      */
-//    public function behaviors()
-//    {
-//        return [
-//            'access' => [
-//                'class' => AccessControl::class,
-//                'only' => ['logout'],
-//                'rules' => [
-//                    [
-//                        'actions' => ['logout'],
-//                        'allow' => true,
-//                        'roles' => ['@'],
-//                    ],
-//                ],
-//            ],
-//            'verbs' => [
-//                'class' => VerbFilter::class,
-//                'actions' => [
-//                    'logout' => ['post'],
-//                ],
-//            ],
-//        ];
-//    }
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'only' => ['logout'],
+                'rules' => [
+                    [
+                        'actions' => ['logout'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::class,
+                'actions' => [
+                    'logout' => ['post'],
+                ],
+            ],
+        ];
+    }
 
     /**
      * Displays homepage.
@@ -46,8 +46,10 @@ class SiteController extends BaseController
      */
     public function actionIndex()
     {
-        $pages = (new PagesUserService())->findPagesByQuery( 10);
-        return $this->render('index', compact('pages'));
+        $service = new PagesUserService();
+        $pages = $service->findPagesByQuery( 10);
+        $subscribers = $service->findSubscribeUsers(Yii::$app->getUser()->getId());
+        return $this->render('index', compact('pages', 'subscribers'));
     }
 
     public function actionSearch($q)
