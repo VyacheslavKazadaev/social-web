@@ -2,6 +2,7 @@
 
 namespace app\lib\services;
 
+use Yii;
 use yii\base\BaseObject;
 use yii\db\Query;
 use yii\web\Controller;
@@ -55,18 +56,44 @@ class PagesUserService extends BaseObject
             ->all(), 'iduser');
     }
 
+    public function savePosts($post, $id)
+    {
+        if (!isset($post['submit-message'])) {
+            return false;
+        }
+
+        Yii::$app->db->createCommand()->insert('posts', [
+            'message' => $post['message'],
+            'iduser' => $id,
+        ])->execute();
+
+        $user = Yii::$app->getUser()->getIdentity();
+        $messages = [['surname' => $user->surname, 'first_name' => $user->first_name, 'message' => $post['message']]];
+        $news = $this->renderPartial('_news_block', compact('messages'));
+
+        $subscribers = (new Query())->select(['idsubscriber'])
+            ->from('subscriber')
+            ->where(['iduser' => $id])
+            ->all();
+        foreach ($subscribers as $idUser) {
+            CacheService::prependNewsToCachesSubscribers($idUser['idsubscriber'], $news);
+        }
+        return true;
+    }
+
     public function renderNews(int $id, Controller $controller)
     {
-
-        $messages = (new Query())->select(['p.message', 'u.surname', 'u.first_name'])
-            ->from([ 'p' => 'posts'])
-            ->innerJoin(['s' => 'subscriber'], 'p.iduser = s.iduser')
-            ->innerJoin(['u' => 'user'], 'u.id = s.iduser')
-            ->where(['s.idsubscriber' => $id])
-            ->limit(1000)
-            ->all();
-        $news = $controller->renderPartial('_news_block', compact('messages'));
-        return $news;
+        return CacheService::getOrSetNews($id, function () use ($controller, $id) {
+            $messages = (new Query())->select(['p.message', 'u.surname', 'u.first_name'])
+                ->from([ 'p' => 'posts'])
+                ->innerJoin(['s' => 'subscriber'], 'p.iduser = s.iduser')
+                ->innerJoin(['u' => 'user'], 'u.id = s.iduser')
+                ->where(['s.idsubscriber' => $id])
+                ->limit(1000)
+                ->orderBy('p.idposts DESC')
+                ->all();
+            return $controller->renderPartial('_news_block', compact('messages'));
+        });
     }
 
 }

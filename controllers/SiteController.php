@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\lib\services\CacheService;
 use app\models\User;
 use app\lib\services\PagesUserService;
 use Yii;
@@ -60,13 +61,7 @@ class SiteController extends BaseController
 
     public function actionPage($id)
     {
-        $post = Yii::$app->request->post();
-        if (isset($post['submit-message'])) {
-            Yii::$app->db->createCommand()->insert('posts', [
-                'message' => $post['message'],
-                'iduser' => $id,
-            ])->execute();
-
+        if ((new PagesUserService())->savePosts(Yii::$app->request->post(), $id)) {
             Yii::$app->response->redirect(Yii::$app->request->getReferrer());
         }
 
@@ -75,6 +70,7 @@ class SiteController extends BaseController
             ->select('message')
             ->from('posts')
             ->where(['iduser' => $id])
+            ->orderBy('idposts DESC')
             ->all()
         ;
         return $this->render('page', compact('model', 'messages'));
