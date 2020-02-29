@@ -16,10 +16,12 @@ use yii\helpers\Html; ?>
         <p><?= $page['first_name'] . ' ' . $page['surname'] ?></p>
         <p>Город: <?= $page['city'] ?></p>
         <div>
-            <?php if(array_search($page['id'], $subscribers) === false): ?>
-                <a href="#" onclick="return false;" class="subscribe" data-id="<?= $page['id'] ?>"><i class="fa fa-plus-square"></i>Подписаться</a>
-            <?php else:?>
-                <span class="subscribe" data-id="<?= $page['id'] ?>"><i class="fa fa-check"></i>Подписан</span>
+            <?php if ($subscribers): ?>
+                <?php if(array_search($page['id'], $subscribers) === false): ?>
+                    <a href="#" onclick="return false;" class="subscribe" data-id="<?= $page['id'] ?>"><i class="fa fa-plus-square"></i>Подписаться</a>
+                <?php else:?>
+                    <span class="subscribe" data-id="<?= $page['id'] ?>"><i class="fa fa-check"></i>Подписан</span>
+                <?php endif; ?>
             <?php endif; ?>
         </div>
         <a class="btn btn-success" href="<?= \yii\helpers\Url::to(['site/page', 'id' => $page['id']]) ?>">Просмотр</a>
