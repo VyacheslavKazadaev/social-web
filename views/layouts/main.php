@@ -71,7 +71,11 @@ AppAsset::register($this);
 
     <div class="container">
         <?php if(!Yii::$app->user->isGuest): ?>
-        <div class="panel"><a href="<?= \yii\helpers\Url::to(['/site/page', 'id' => Yii::$app->user->getId()]) ?>" >Моя страница</a></div>
+        <div class="panel">
+            <a href="<?= \yii\helpers\Url::to(['/site/page', 'id' => Yii::$app->user->getId()]) ?>" >Моя страница</a>
+            <span>|</span>
+            <a href="<?= \yii\helpers\Url::to(['/site/news', 'id' => Yii::$app->user->getId()]) ?>" >Новости</a>
+        </div>
         <?php endif; ?>
         <?= $content ?>
     </div>

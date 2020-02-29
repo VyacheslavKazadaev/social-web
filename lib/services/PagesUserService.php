@@ -4,6 +4,7 @@ namespace app\lib\services;
 
 use yii\base\BaseObject;
 use yii\db\Query;
+use yii\web\Controller;
 
 class PagesUserService extends BaseObject
 {
@@ -53,9 +54,19 @@ class PagesUserService extends BaseObject
             ->limit(500)
             ->all(), 'iduser');
     }
-    public function renderNews($id)
+
+    public function renderNews(int $id, Controller $controller)
     {
 
+        $messages = (new Query())->select(['p.message', 'u.surname', 'u.first_name'])
+            ->from([ 'p' => 'posts'])
+            ->innerJoin(['s' => 'subscriber'], 'p.iduser = s.iduser')
+            ->innerJoin(['u' => 'user'], 'u.id = s.iduser')
+            ->where(['s.idsubscriber' => $id])
+            ->limit(1000)
+            ->all();
+        $news = $controller->renderPartial('_news_block', compact('messages'));
+        return $news;
     }
 
 }

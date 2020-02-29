@@ -82,8 +82,8 @@ class SiteController extends BaseController
 
     public function actionNews($id)
     {
-        $news = (new PagesUserService())->renderNews($id);
-        return $this->render('index', compact('news'));
+        $news = (new PagesUserService())->renderNews($id, $this);
+        return $this->render('news', compact('news'));
     }
 
     public function actionSubscribe()
