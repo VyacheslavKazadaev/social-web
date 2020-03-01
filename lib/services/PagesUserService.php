@@ -2,6 +2,8 @@
 
 namespace app\lib\services;
 
+use app\queue\jobs\AddPostJob;
+use PhpAmqpLib\Connection\AMQPStreamConnection;
 use Yii;
 use yii\base\BaseObject;
 use yii\db\Query;
@@ -67,17 +69,11 @@ class PagesUserService extends BaseObject
             'iduser' => $id,
         ])->execute();
 
-        $user = Yii::$app->getUser()->getIdentity();
-        $messages = [['surname' => $user->surname, 'first_name' => $user->first_name, 'message' => $post['message']]];
-        $news = $this->renderPartial('_news_block', compact('messages'));
+        Yii::$app->queue->push(new AddPostJob([
+            'message' => $post['message'],
+            'idAuthor' => $id,
+        ]));
 
-        $subscribers = (new Query())->select(['idsubscriber'])
-            ->from('subscriber')
-            ->where(['iduser' => $id])
-            ->all();
-        foreach ($subscribers as $idUser) {
-            CacheService::prependNewsToCachesSubscribers($idUser['idsubscriber'], $news);
-        }
         return true;
     }
 

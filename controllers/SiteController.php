@@ -65,7 +65,7 @@ class SiteController extends BaseController
             Yii::$app->response->redirect(Yii::$app->request->getReferrer());
         }
 
-        $model = User::findIdentity($id);
+        $model = Yii::$app->getUser()->getIdentity();
         $messages = (new Query())
             ->select('message')
             ->from('posts')

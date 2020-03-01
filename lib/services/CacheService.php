@@ -14,8 +14,9 @@ class CacheService
     public static function prependNewsToCachesSubscribers($idUser, $message)
     {
         $cache = \Yii::$app->getCache();
-        $value = $cache->get(static::KEY_PREFIX_NEWS . $idUser) ?: '';
+        $key = static::KEY_PREFIX_NEWS . $idUser;
+        $value = $cache->get($key) ?: '';
         $value = $message . $value;
-        $cache->set(static::KEY_PREFIX_NEWS . $idUser, $value);
+        $cache->set($key, $value);
     }
 }

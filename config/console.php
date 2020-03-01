@@ -2,11 +2,13 @@
 
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
+$queue = require __DIR__ . '/queue.php';
+$cache = require __DIR__ . '/cache.php';
 
 $config = [
     'id' => 'basic-console',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
+    'bootstrap' => ['log', 'queue'],
     'controllerNamespace' => 'app\commands',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
@@ -14,9 +16,7 @@ $config = [
         '@tests' => '@app/tests',
     ],
     'components' => [
-        'cache' => [
-            'class' => 'yii\caching\FileCache',
-        ],
+        'cache' => $cache,
         'log' => [
             'targets' => [
                 [
@@ -25,6 +25,7 @@ $config = [
                 ],
             ],
         ],
+        'queue' => $queue,
         'db' => $db,
     ],
     'params' => $params,

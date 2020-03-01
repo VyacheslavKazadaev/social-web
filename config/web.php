@@ -2,6 +2,8 @@
 
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
+$queue = require __DIR__ . '/queue.php';
+$cache = require __DIR__ . '/cache.php';
 
 $config = [
     'id' => 'basic',
@@ -18,15 +20,8 @@ $config = [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'akojVQTrEbTif15EADJCgjeL00YT-rHE',
         ],
-        'cache' => [
-//            'class' => 'yii\caching\FileCache',
-            'class' => 'yii\redis\Cache',
-            'redis' => [
-                'hostname' => 'localhost',
-                'port' => 6379,
-                'database' => 0,
-            ]
-        ],
+        'cache' => $cache,
+        'queue' => $queue,
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
