@@ -6,9 +6,9 @@ async function subscribe() {
     let response = await fetch('/site/subscribe', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json;charset=utf-8'
+            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
         },
-        body: JSON.stringify({'id': $(this).data('id')})
+        body: 'id='+$(this).data('id')+'&_csrf='+yii.getCsrfToken()
     });
 
     let result = await response.json();

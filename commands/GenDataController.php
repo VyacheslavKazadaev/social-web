@@ -68,8 +68,8 @@ class GenDataController extends Controller
                 '$2y$13$VhkbB/erFT1Y8jULlqXDG.93BVrjhYLpCeOZoDBx0hM7HDvInMScO',
                 $faker->lastName,
                 $faker->firstName,
-                30,
-                0,
+                $faker->numberBetween(15, 100),
+                (int)$faker->boolean,
                 'Interests',
                 $faker->city,
             ];

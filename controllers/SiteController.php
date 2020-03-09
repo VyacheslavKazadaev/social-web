@@ -8,6 +8,7 @@ use app\lib\services\PagesUserService;
 use Yii;
 use yii\db\Query;
 use yii\filters\AccessControl;
+use yii\web\NotFoundHttpException;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 
@@ -24,7 +25,7 @@ class SiteController extends BaseController
                 'only' => ['logout'],
                 'rules' => [
                     [
-                        'actions' => ['logout'],
+                        'actions' => ['logout', 'chat'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -65,7 +66,7 @@ class SiteController extends BaseController
             Yii::$app->response->redirect(Yii::$app->request->getReferrer());
         }
 
-        $model = Yii::$app->getUser()->getIdentity();
+        $model = User::findIdentity($id);
         $messages = (new Query())
             ->select('message')
             ->from('posts')
@@ -82,10 +83,31 @@ class SiteController extends BaseController
         return $this->render('news', compact('news'));
     }
 
+    /**
+     * @throws NotFoundHttpException
+     */
     public function actionSubscribe()
     {
         $id = Yii::$app->request->post('id');
-        $this->renderContent(json_encode(['yes' => $id]));
+        return $this->asJson(['yes' => $id]);
+    }
+
+    public function actionChat()
+    {
+        $id = Yii::$app->request->get('id');
+        $authUserId = Yii::$app->getUser()->getId();
+        $in = [$authUserId, $id];
+        $messages = (new Query())
+            ->select('message', 'idauthor')
+            ->from('chat')
+            ->where([
+                'idauthor' => $in,
+                'idrecipient' => $in
+            ])
+            ->orderBy('idchat DESC')
+            ->all()
+        ;
+        return $this->render('chat', compact('messages', 'authUserId'));
     }
 
     /**

@@ -25,6 +25,7 @@ use yii\helpers\Html; ?>
             <?php endif; ?>
         </div>
         <a class="btn btn-success" href="<?= \yii\helpers\Url::to(['site/page', 'id' => $page['id']]) ?>">Просмотр</a>
+        <a class="btn btn-info" href="<?= \yii\helpers\Url::to(['site/chat', 'id' => $page['id']]) ?>">Чат</a>
     </div>
 <?php if (($key % 3) == 2):?>
 </div>
