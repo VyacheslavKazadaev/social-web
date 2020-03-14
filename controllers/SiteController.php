@@ -2,7 +2,7 @@
 
 namespace app\controllers;
 
-use app\lib\services\CacheService;
+use app\lib\helpers\DateHelper;
 use app\models\User;
 use app\lib\services\PagesUserService;
 use Yii;
@@ -95,19 +95,21 @@ class SiteController extends BaseController
     public function actionChat()
     {
         $id = Yii::$app->request->get('id');
-        $authUserId = Yii::$app->getUser()->getId();
-        $in = [$authUserId, $id];
-        $messages = (new Query())
-            ->select('message', 'idauthor')
-            ->from('chat')
-            ->where([
-                'idauthor' => $in,
-                'idrecipient' => $in
-            ])
-            ->orderBy('idchat DESC')
-            ->all()
-        ;
-        return $this->render('chat', compact('messages', 'authUserId'));
+        $author = Yii::$app->getUser()->getIdentity();
+        $recipient = User::findIdentity($id);
+        if ($post = Yii::$app->request->post()) {
+            Yii::$app->getDb()->createCommand()->insert('chat', [
+                'message'     => $post['message'],
+                'date_write'  => (new DateHelper())->formatDB(),
+                'idauthor'    => Yii::$app->getUser()->getId(),
+                'idrecipient' => $id,
+            ])->execute();
+            $messages = [['message' => $post['message'], 'idauthor' => $author->getId()]];
+            return $this->renderAjax('_chat_message', compact('messages', 'author', 'recipient'));
+        }
+
+        $messages = (new PagesUserService())->findChatMessagesWithRecipient($id);
+        return $this->render('chat', compact('messages', 'author', 'recipient'));
     }
 
     /**

@@ -25,6 +25,7 @@ class AppAsset extends AssetBundle
     ];
     public $js = [
         'js/site.js',
+        'js/chat.js',
     ];
     public $depends = [
         'rmrevin\yii\fontawesome\CdnFreeAssetBundle',

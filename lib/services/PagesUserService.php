@@ -92,4 +92,20 @@ class PagesUserService extends BaseObject
         });
     }
 
+    public function findChatMessagesWithRecipient(int $recipientId)
+    {
+        $in = [Yii::$app->getUser()->getId(), $recipientId];
+        return (new Query())
+            ->select(['message', 'idauthor'])
+            ->from(['c' => 'chat'])
+            ->where([
+                'idauthor' => $in,
+                'idrecipient' => $in
+            ])
+            ->limit(30)
+            ->orderBy('date_write')
+            ->all()
+        ;
+    }
+
 }

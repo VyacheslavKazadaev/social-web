@@ -1,14 +1,21 @@
 <?php
 /**
+ * @var $this \yii\web\View
  * @var $authUserId integer
  * @var $messages array
+ * @var $author User
+ * @var $recipient User
  */
+
+use app\models\User;
+
 ?>
 <div class="row chat-panel">
     <div class="col-md-12">
         <div class="panel panel-primary">
             <div class="panel-heading" id="accordion">
-                <span class="glyphicon glyphicon-comment"></span> Chat
+                <span class="glyphicon glyphicon-comment"></span> Chat With
+                <span><?= $recipient->first_name . ' ' . $recipient->surname ?></span>
             </div>
                 <div class="panel-body">
                     <ul class="chat">
@@ -55,31 +62,15 @@
                             </div>
                         </li>
 
-                        <?php foreach ($messages as $item): $fromAuthUser = $item['idauthor'] == $authUserId ?>
-                            <li class="<?= $fromAuthUser ? 'left' : 'right' ?> clearfix"><span class="chat-img pull-<?= $fromAuthUser ? 'left' : 'right' ?>">
-                            <img src="<?= $fromAuthUser
-                                ? 'http://placehold.it/50/55C1E7/fff&text=U'
-                                : 'http://placehold.it/50/FA6F57/fff&text=ME' ?>" alt="User Avatar" class="img-circle" />
-                        </span>
-                                <div class="chat-body clearfix">
-                                    <div class="header">
-                                        <strong class="primary-font">Jack Sparrow</strong> <small class="pull-right text-muted">
-                                            <span class="glyphicon glyphicon-time"></span>12 mins ago</small>
-                                    </div>
-                                    <p>
-                                        <?= $item['message'] ?>
-                                    </p>
-                                </div>
-                            </li>
-                        <?php endforeach; ?>
+                        <?= $this->render('_chat_message', compact('messages', 'author', 'recipient')) ?>
                     </ul>
                 </div>
                 <div class="panel-footer">
                     <div class="input-group">
-                        <input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here..." />
+                        <input id="btn-input" type="text" class="form-control input-sm" placeholder="Новое сообщение..." />
                         <span class="input-group-btn">
                             <button class="btn btn-warning btn-sm" id="btn-chat">
-                                Send</button>
+                                Отправить</button>
                         </span>
                     </div>
                 </div>
