@@ -2,6 +2,7 @@
 
 namespace app\lib\services;
 
+use app\lib\helpers\DateHelper;
 use app\queue\jobs\AddPostJob;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use Yii;
@@ -108,4 +109,13 @@ class PagesUserService extends BaseObject
         ;
     }
 
+    public function writeToChat(string $message, int $authorID, int $recipientID)
+    {
+        Yii::$app->getDb()->createCommand()->insert('chat', [
+            'message'     => $message,
+            'date_write'  => (new DateHelper())->formatDB(),
+            'idauthor'    => $authorID,
+            'idrecipient' => $recipientID,
+        ])->execute();
+    }
 }

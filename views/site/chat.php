@@ -1,7 +1,6 @@
 <?php
 /**
  * @var $this \yii\web\View
- * @var $authUserId integer
  * @var $messages array
  * @var $author User
  * @var $recipient User
@@ -23,13 +22,15 @@ use app\models\User;
                     </ul>
                 </div>
                 <div class="panel-footer">
-                    <div class="input-group">
-                        <input id="btn-input" type="text" class="form-control input-sm" placeholder="Новое сообщение..." />
+                    <form class="input-group" id="form-chat">
+                        <input id="btn-input" type="text" class="form-control input-sm" placeholder="Новое сообщение..."
+                               data-author="<?= $author->getId() ?>" data-recipient="<?= $recipient->getId() ?>"
+                        />
                         <span class="input-group-btn">
                             <button class="btn btn-warning btn-sm" id="btn-chat">
                                 Отправить</button>
                         </span>
-                    </div>
+                    </form>
                 </div>
             </div>
     </div>

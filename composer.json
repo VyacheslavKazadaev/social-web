@@ -23,7 +23,8 @@
         "yiisoft/yii2-redis": "2.0.11",
         "ext-json": "*",
         "enqueue/amqp-lib": "0.10.1",
-        "yiisoft/yii2-queue": "2.3.0"
+        "yiisoft/yii2-queue": "2.3.0",
+        "consik/yii2-websocket": "1.0.1"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

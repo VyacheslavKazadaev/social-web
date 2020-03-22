@@ -25,6 +25,15 @@ $config = [
                 ],
             ],
         ],
+        'user' => [
+            'class' => 'yii\web\User',
+            'identityClass' => 'app\models\User',
+            'enableSession' => false,
+            //'enableAutoLogin' => true,
+        ],
+        'session' => [ // for use session in console application
+            'class' => 'yii\web\Session'
+        ],
         'queue' => $queue,
         'db' => $db,
     ],

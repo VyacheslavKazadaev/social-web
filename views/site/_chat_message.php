@@ -1,4 +1,10 @@
-<?php foreach ($messages as $item): $fromAuthUser = $item['idauthor'] == Yii::$app->user->getId(); ?>
+<?php
+/**
+ * @var $messages array
+ * @var $author \app\models\User
+ * @var $recipient \app\models\User
+ */
+foreach ($messages as $item): $fromAuthUser = $item['idauthor'] == $author->getId(); ?>
 <li class="<?= $fromAuthUser ? 'left' : 'right' ?> clearfix">
     <span class="chat-img pull-<?= $fromAuthUser ? 'left' : 'right' ?>">
     <img src="<?= $fromAuthUser
