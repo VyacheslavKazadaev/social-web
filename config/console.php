@@ -2,13 +2,13 @@
 
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
-$queue = require __DIR__ . '/queue.php';
+$rabbitmq = require __DIR__ . '/rabbitmq.php';
 $cache = require __DIR__ . '/cache.php';
 
 $config = [
     'id' => 'basic-console',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log', 'queue'],
+    'bootstrap' => ['log'],
     'controllerNamespace' => 'app\commands',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
@@ -34,8 +34,8 @@ $config = [
         'session' => [ // for use session in console application
             'class' => 'yii\web\Session'
         ],
-        'queue' => $queue,
         'db' => $db,
+        'rabbitmq' => $rabbitmq,
     ],
     'params' => $params,
     'controllerMap' => [

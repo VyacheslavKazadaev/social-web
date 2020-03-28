@@ -62,8 +62,8 @@ class SiteController extends BaseController
 
     public function actionPage($id)
     {
-        if ((new PagesUserService())->savePosts(Yii::$app->request->post(), $id)) {
-            Yii::$app->response->redirect(Yii::$app->request->getReferrer());
+        if ($news = (new PagesUserService())->savePosts(Yii::$app->request->post(), $id)) {
+            return $news;
         }
 
         $model = User::findIdentity($id);

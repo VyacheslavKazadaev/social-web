@@ -1,4 +1,8 @@
 <?php
 /** @var $news string */
-echo $news;
+?>
+<div id="block-news">
+    <input id="author" type="hidden" value="<?= Yii::$app->getUser()->getId() ?>">
+<?= $news; ?>
+</div>
 

@@ -2,30 +2,30 @@
 namespace app\queue\jobs;
 
 use app\lib\services\CacheService;
-use Yii;
+use mikemadisonweb\rabbitmq\components\ConsumerInterface;
+use PhpAmqpLib\Message\AMQPMessage;
 use yii\db\Query;
 
-class AddPostJob extends \yii\base\BaseObject implements \yii\queue\JobInterface
+class AddPostJob implements ConsumerInterface
 {
-
-    public $message;
-    public $idAuthor;
-
     /**
-     * @inheritDoc
+     * @param AMQPMessage $msg
+     * @return bool
      */
-    public function execute($queue)
+    public function execute(AMQPMessage $msg)
     {
-        $user = \app\models\User::findIdentity($this->idAuthor);
-        $messages = [['surname' => $user->surname, 'first_name' => $user->first_name, 'message' => $this->message]];
-        $news = (new \yii\web\View())->render('//site/_news_block', compact('messages'));
+        $data = unserialize($msg->body);
 
         $subscribers = (new Query())->select(['idsubscriber'])
             ->from('subscriber')
-            ->where(['iduser' => $this->idAuthor])
+            ->where(['iduser' => $data['idAuthor']])
             ->all();
         foreach ($subscribers as $idUser) {
-            CacheService::prependNewsToCachesSubscribers($idUser['idsubscriber'], $news);
+            CacheService::prependNewsToCachesSubscribers($idUser['idsubscriber'], $data['message']);
         }
+
+        // Apply your business logic here
+
+        return ConsumerInterface::MSG_ACK;
     }
 }

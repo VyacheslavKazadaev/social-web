@@ -2,7 +2,7 @@
 
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
-$queue = require __DIR__ . '/queue.php';
+$rabbitmq = require __DIR__ . '/rabbitmq.php';
 $cache = require __DIR__ . '/cache.php';
 
 $config = [
@@ -21,7 +21,7 @@ $config = [
             'cookieValidationKey' => 'akojVQTrEbTif15EADJCgjeL00YT-rHE',
         ],
         'cache' => $cache,
-        'queue' => $queue,
+        'rabbitmq' => $rabbitmq,
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,

@@ -6,7 +6,11 @@
  */
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm; ?>
+use yii\widgets\ActiveForm;
+
+$this->registerJsFile('@web/js/page.js', ['depends' => ['yii\web\YiiAsset']]);
+
+?>
 
 <div class="form-group">
     <p>Ваш Email: <strong><?= Html::encode($model->email) ?></strong></p><hr>
@@ -19,6 +23,7 @@ use yii\widgets\ActiveForm; ?>
 </div>
 <?php if (Yii::$app->getUser()->getId() === $model->getId()): ?>
 <form class="row message-edit-block" method="post">
+    <input type="hidden" name="author" value="<?= $model->getId() ?>">
     <input type="hidden" name="_csrf" value="<?=Yii::$app->request->getCsrfToken()?>" />
     <label class="col-xs-12">
         <textarea class="form-control" name="message"></textarea>

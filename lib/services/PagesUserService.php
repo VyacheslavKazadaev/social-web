@@ -3,6 +3,7 @@
 namespace app\lib\services;
 
 use app\lib\helpers\DateHelper;
+use app\models\User;
 use app\queue\jobs\AddPostJob;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use Yii;
@@ -70,12 +71,17 @@ class PagesUserService extends BaseObject
             'iduser' => $id,
         ])->execute();
 
-        Yii::$app->queue->push(new AddPostJob([
-            'message' => $post['message'],
+        $user = User::findIdentity($id);
+        $messages = [['surname' => $user->surname, 'first_name' => $user->first_name, 'message' => $post['message']]];
+        $news = (new \yii\web\View())->render('//site/_news_block', compact('messages'));
+        $producer = \Yii::$app->rabbitmq->getProducer('posts');
+        $msg = serialize([
+            'message' => $news,
             'idAuthor' => $id,
-        ]));
+        ]);
+        $producer->publish($msg, 'exch_posts', 'post_key');
 
-        return true;
+        return $news;
     }
 
     public function renderNews(int $id, Controller $controller)
