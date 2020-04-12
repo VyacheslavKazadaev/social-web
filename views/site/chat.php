@@ -8,6 +8,8 @@
 
 use app\models\User;
 
+$this->registerJsFile('@web/js/chat.js', ['depends' => ['app\assets\AppAsset']]);
+$this->registerCssFile('@web/css/chat.css', ['depends' => ['app\assets\AppAsset']]);
 ?>
 <div class="row chat-panel">
     <div class="col-md-12">
