@@ -1,28 +1,3 @@
-// $(document)
-//     .on('click', '#btn-chat', writeInChat)
-// ;
-//
-// async function writeInChat() {
-//     let btn = $('#btn-input');
-//     let message = btn.val().trim();
-//     if (message === '') {
-//         return;
-//     }
-//
-//     let response = await fetch('', {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
-//         },
-//         body: `message=${message}&${yii.getCsrfParam()}=${yii.getCsrfToken()}`
-//     });
-//
-//     let result = await response.text();
-//     $('ul.chat').append(result);
-//     btn.val('');
-//     document.location.reload();
-// }
-
 $(function() {
     const chatWindow = $('.chat-panel .panel-body');
     chatWindow.scrollTop($('body').height());

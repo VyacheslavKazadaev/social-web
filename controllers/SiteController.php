@@ -97,16 +97,6 @@ class SiteController extends BaseController
         $id = Yii::$app->request->get('id');
         $author = Yii::$app->getUser()->getIdentity();
         $recipient = User::findIdentity($id);
-        if ($post = Yii::$app->request->post()) {
-            Yii::$app->getDb()->createCommand()->insert('chat', [
-                'message'     => $post['message'],
-                'date_write'  => (new DateHelper())->formatDB(),
-                'idauthor'    => Yii::$app->getUser()->getId(),
-                'idrecipient' => $id,
-            ])->execute();
-            $messages = [['message' => $post['message'], 'idauthor' => $author->getId()]];
-            return $this->renderAjax('_chat_message', compact('messages', 'author', 'recipient'));
-        }
 
         $messages = (new PagesUserService())->findChatMessagesWithRecipient($id);
         return $this->render('chat', compact('messages', 'author', 'recipient'));
