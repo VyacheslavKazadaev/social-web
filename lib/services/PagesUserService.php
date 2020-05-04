@@ -6,6 +6,8 @@ use app\lib\helpers\DateHelper;
 use app\models\User;
 use app\queue\jobs\AddPostJob;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
+use Tarantool\Client\Client;
+use Tarantool\Client\Schema\Criteria;
 use Yii;
 use yii\base\BaseObject;
 use yii\db\Query;
@@ -46,6 +48,52 @@ class PagesUserService extends BaseObject
             ->from($queryOne)
             ->orderBy('first_name')
             ->all();
+    }
+
+    public function findPagesByQueryUnionFromTarantool($length, $q): array
+    {
+        $client = Client::fromDsn('tcp://127.0.0.1:3301');
+//        $client = Client::fromOptions([
+//                'uri' => 'tcp://192.168.222.153:3301',
+//                'username' => 'guest',
+//                'password' => '',
+//        ]);
+        $client->ping();
+//        $space = $client->getSpace('UserCache');
+        $client->evaluate('function select_by_prefix(prefix)
+            local result = {}
+            for _, item in box.space.UserCache.index.secondary_surname:pairs(prefix, { iterator = box.index.GT }) do
+                if string.sub(item[5], 1, string.len(prefix)) ~= prefix then
+                    table.insert(result, item)
+                    return item
+                else
+                    break
+                end
+            end
+            for _, item in box.space.UserCache.index.secondary_first_name:pairs(prefix, { iterator = box.index.GT }) do
+                if string.sub(item[6], 1, string.len(prefix)) ~= prefix then
+                    table.insert(result, item)
+                    return item
+                else
+                    break
+                end
+            end
+            return result
+        end');
+        $result = $client->evaluate('return select_by_prefix(...)', $q);
+//        $resultSurname = $space->select(Criteria::index('secondary_surname')
+//            ->andKey([$q])
+//            ->andLimit($length)
+//        );
+//        if ($resultSurname) {
+//
+//        }
+//        $resultFirstName = $space->select(Criteria::index('secondary_first_name')
+//            ->andKey([$q])
+//            ->andLimit($length)
+//        );
+        return $result;
+//        return [...$resultSurname, ...$resultFirstName];
     }
 
     public function findSubscribeUsers($id)
