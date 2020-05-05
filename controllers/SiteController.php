@@ -99,7 +99,19 @@ class SiteController extends BaseController
         $recipient = User::findIdentity($id);
 
         $messages = (new PagesUserService())->findChatMessagesWithRecipient($id);
-        return $this->render('chat', compact('messages', 'author', 'recipient'));
+        $usersInfo = json_encode([
+            "author" => [
+                "id" => $author->getId(),
+                "first_name" => $author->first_name,
+                "surname" => $author->surname
+            ],
+            "recipient" => [
+                "id" => $recipient->getId(),
+                "first_name" => $recipient->first_name,
+                "surname" => $recipient->surname
+            ]
+        ], JSON_UNESCAPED_UNICODE);
+        return $this->render('chat', compact('messages', 'author', 'recipient', 'usersInfo'));
     }
 
     /**

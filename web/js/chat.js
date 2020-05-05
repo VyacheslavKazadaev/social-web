@@ -1,8 +1,10 @@
 $(function() {
+    showMessages();
+
     const chatWindow = $('.chat-panel .panel-body');
     chatWindow.scrollTop($('body').height());
 
-    const chat = new WebSocket('ws://localhost:9859');
+    const chat = new WebSocket('ws://127.0.0.1:9859');
     let btnInput = $('#btn-input');
     chat.onmessage = (e) => {
         btnInput.val('');
@@ -15,17 +17,16 @@ $(function() {
         }
     };
 
-    let author = btnInput.data('author');
-    let recipient = btnInput.data('recipient');
+    console.log($('#params-users').html());
+    const paramsUsers = JSON.parse($('#params-users').html());
 
     chat.onopen = (e) => {
         console.log('Connection established! Please, set your message.');
         chat.send( JSON.stringify({
-            'action' : 'ping', 'author': author, 'recipient': recipient
+            'action' : 'ping', 'author': paramsUsers.author, 'recipient': paramsUsers.recipient
         }));
     };
 
-    // $('#btn-chat').click(function() {
     $('#form-chat').submit((e) => {
         e.preventDefault();
 
@@ -33,10 +34,21 @@ $(function() {
         if (message) {
             chat.send( JSON.stringify({
                 'action' : 'chat', 'message' : message,
-                'author': author, 'recipient': recipient
+                'author': paramsUsers.author, 'recipient': paramsUsers.recipient
             }));
         } else {
             alert('Enter the message');
         }
     });
 });
+
+function showMessages() {
+    $.post('http://127.0.0.1:82/chat', $('#params-users').html(), (response) => {
+        const chatBlock = $('.chat-panel .chat');
+        chatBlock.empty();
+
+        chatBlock.html(JSON.parse(response).response);
+        const chatWindow = $('.chat-panel .panel-body');
+        chatWindow.scrollTop($('body').height());
+    }, 'json');
+}

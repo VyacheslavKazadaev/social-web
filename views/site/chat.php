@@ -4,6 +4,7 @@
  * @var $messages array
  * @var $author User
  * @var $recipient User
+ * @var $usersInfo string
  */
 
 use app\models\User;
@@ -20,11 +21,12 @@ $this->registerCssFile('@web/css/chat.css', ['depends' => ['app\assets\AppAsset'
             </div>
                 <div class="panel-body">
                     <ul class="chat">
-                        <?= $this->render('_chat_message', compact('messages', 'author', 'recipient')) ?>
                     </ul>
                 </div>
                 <div class="panel-footer">
                     <form class="input-group" id="form-chat">
+                        <p class="hidden" id="params-users"><?= $usersInfo ?></p>
+<!--                        <input type="hidden" id="params-users" value="--><?//= $usersInfo ?><!--" />-->
                         <input id="btn-input" type="text" class="form-control input-sm" placeholder="Новое сообщение..."
                                data-author="<?= $author->getId() ?>" data-recipient="<?= $recipient->getId() ?>"
                         />
