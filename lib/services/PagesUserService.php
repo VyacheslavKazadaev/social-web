@@ -53,47 +53,30 @@ class PagesUserService extends BaseObject
     public function findPagesByQueryUnionFromTarantool($length, $q): array
     {
         $client = Client::fromDsn('tcp://127.0.0.1:3301');
-//        $client = Client::fromOptions([
-//                'uri' => 'tcp://192.168.222.153:3301',
-//                'username' => 'guest',
-//                'password' => '',
-//        ]);
         $client->ping();
-//        $space = $client->getSpace('UserCache');
         $client->evaluate('function select_by_prefix(prefix)
-            local result = {}
-            for _, item in box.space.UserCache.index.secondary_surname:pairs(prefix, { iterator = box.index.GT }) do
-                if string.sub(item[5], 1, string.len(prefix)) ~= prefix then
-                    table.insert(result, item)
-                    return item
-                else
-                    break
-                end
+            local ret = {}
+            local limit = '.$length.'
+            for _, tuple in box.space.UserCache.index.secondary_surname:pairs(prefix, {iterator = \'GE\'}) do
+              if string.startswith(tuple[6], prefix, 1, -1) then                
+                table.insert(ret, tuple)
+              end
+              if table.maxn(ret) >= limit then
+                break
+              end
             end
-            for _, item in box.space.UserCache.index.secondary_first_name:pairs(prefix, { iterator = box.index.GT }) do
-                if string.sub(item[6], 1, string.len(prefix)) ~= prefix then
-                    table.insert(result, item)
-                    return item
-                else
-                    break
-                end
+            for _, tuple in box.space.UserCache.index.secondary_first_name:pairs(prefix, {iterator = \'GE\'}) do
+              if string.startswith(tuple[7], prefix, 1, -1) then
+                table.insert(ret, tuple)
+              end
+              if table.maxn(ret) >= limit then
+                break
+              end
             end
-            return result
+            return ret
         end');
-        $result = $client->evaluate('return select_by_prefix(...)', $q);
-//        $resultSurname = $space->select(Criteria::index('secondary_surname')
-//            ->andKey([$q])
-//            ->andLimit($length)
-//        );
-//        if ($resultSurname) {
-//
-//        }
-//        $resultFirstName = $space->select(Criteria::index('secondary_first_name')
-//            ->andKey([$q])
-//            ->andLimit($length)
-//        );
+        $result = $client->evaluate('return select_by_prefix(...)', $q)[0];
         return $result;
-//        return [...$resultSurname, ...$resultFirstName];
     }
 
     public function findSubscribeUsers($id)
