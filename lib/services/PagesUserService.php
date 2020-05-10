@@ -4,10 +4,7 @@ namespace app\lib\services;
 
 use app\lib\helpers\DateHelper;
 use app\models\User;
-use app\queue\jobs\AddPostJob;
-use PhpAmqpLib\Connection\AMQPStreamConnection;
 use Tarantool\Client\Client;
-use Tarantool\Client\Schema\Criteria;
 use Yii;
 use yii\base\BaseObject;
 use yii\db\Query;
@@ -50,7 +47,7 @@ class PagesUserService extends BaseObject
             ->all();
     }
 
-    public function findPagesByQueryUnionFromTarantool($length, $q): array
+    public function findPagesByQueryUnionFromTarantool($length, $q = null): array
     {
         $client = Client::fromDsn('tcp://127.0.0.1:3301');
         $client->ping();
@@ -58,17 +55,21 @@ class PagesUserService extends BaseObject
             local ret = {}
             local limit = '.$length.'
             for _, tuple in box.space.UserCache.index.secondary_surname:pairs(prefix, {iterator = \'GE\'}) do
-              if string.startswith(tuple[6], prefix, 1, -1) then                
+              ' . ( isset($q) ? '
+              if string.startswith(tuple[6], prefix, 1, -1) then
                 table.insert(ret, tuple)
               end
+              ' : '').'
               if table.maxn(ret) >= limit then
                 break
               end
             end
             for _, tuple in box.space.UserCache.index.secondary_first_name:pairs(prefix, {iterator = \'GE\'}) do
+              ' . ( isset($q) ? '
               if string.startswith(tuple[7], prefix, 1, -1) then
                 table.insert(ret, tuple)
               end
+              ' : '').'
               if table.maxn(ret) >= limit then
                 break
               end

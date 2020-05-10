@@ -49,7 +49,8 @@ class SiteController extends BaseController
     public function actionIndex()
     {
         $service = new PagesUserService();
-        $pages = $service->findPagesByQuery( 10);
+//        $pages = $service->findPagesByQuery( 10);
+        $pages = $service->findPagesByQueryUnionFromTarantool( 10);
         $subscribers = $service->findSubscribeUsers(Yii::$app->getUser()->getId());
         return $this->render('index', compact('pages', 'subscribers'));
     }

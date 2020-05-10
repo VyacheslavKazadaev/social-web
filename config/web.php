@@ -53,6 +53,7 @@ $config = [
             'enableStrictParsing' => false,
             'rules' => [
                 'page/<id:\d+>' => 'site/page/',
+                'search/<q:\w+>' => 'site/search/'
             ],
         ],
     ],
