@@ -49,7 +49,10 @@ class PagesUserService extends BaseObject
 
     public function findPagesByQueryUnionFromTarantool($length, $q = null): array
     {
-        $client = Client::fromDsn('tcp://127.0.0.1:3301');
+        $client = Client::fromOptions([
+            'uri' => 'tcp://127.0.0.1:3301',
+            'persistent' => true,
+        ]);
         $client->evaluate('function select_by_prefix(prefix)
             local ret = {}
             local limit = '.$length.'
