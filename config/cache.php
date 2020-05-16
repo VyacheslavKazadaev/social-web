@@ -2,8 +2,8 @@
 return [
     'class' => 'yii\redis\Cache',
     'redis' => [
-        'hostname' => 'localhost',
-        'port' => 6379,
+        'hostname' => 'redis',
+        'port' => 6380,
         'database' => 0,
     ]
 ];
