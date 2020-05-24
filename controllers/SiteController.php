@@ -57,7 +57,7 @@ class SiteController extends BaseController
     public function actionSearch($q)
     {
         $pages = (new PagesUserService())->findPagesByQueryUnionFromTarantool( 10, $q);
-        return $this->render('index', compact('pages'));
+        return $this->render('index_tarantool', compact('pages'));
     }
 
     public function actionPage($id)

@@ -17,7 +17,7 @@ class m200108_111941_create_user_table extends Migration
             'email' => $this->string()->comment('Email'),
             'password' => $this->string()->comment('Пароль'),
             'auth_key' => $this->string(),
-            'access_token' => $this->string(),
+            'access_token' => $this->string()->defaultValue('0'),
             'surname'   => $this->string()->comment('Фамилия'),
             'first_name'   => $this->string()->comment('Имя'),
             'age'         => $this->integer(3)->unsigned()->comment('Возраст'),

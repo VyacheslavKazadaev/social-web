@@ -130,7 +130,6 @@ box.cfg {
 }
 
 local function bootstrapUser()
-    box.schema.user.grant('guest', 'read,write,execute', 'universe')
     local s = box.schema.create_space('UserCache')
     s:format({
     {name = 'id', type = 'unsigned' },

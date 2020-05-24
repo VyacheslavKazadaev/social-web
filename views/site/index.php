@@ -13,19 +13,19 @@ use yii\helpers\Html; ?>
 <?php endif; ?>
     <div class="col-sm-3 pageuser text-center">
         <img src="/img/avatar_2x.png" class="img-thumbnail"/>
-        <p><?= $page[6] . ' ' . $page[5] ?></p>
-        <p>Город: <?= $page[10] ?></p>
+        <p><?= $page['first_name'] . ' ' . $page['surname'] ?></p>
+        <p>Город: <?= $page['city'] ?></p>
         <div>
             <?php if (!empty($subscribers)): ?>
-                <?php if(array_search($page[0], $subscribers) === false): ?>
-                    <a href="#" onclick="return false;" class="subscribe" data-id="<?= $page[0] ?>"><i class="fa fa-plus-square"></i>Подписаться</a>
+                <?php if(array_search($page['id'], $subscribers) === false): ?>
+                    <a href="#" onclick="return false;" class="subscribe" data-id="<?= $page['id'] ?>"><i class="fa fa-plus-square"></i>Подписаться</a>
                 <?php else:?>
-                    <span class="subscribe" data-id="<?= $page[0] ?>"><i class="fa fa-check"></i>Подписан</span>
+                    <span class="subscribe" data-id="<?= $page['id'] ?>"><i class="fa fa-check"></i>Подписан</span>
                 <?php endif; ?>
             <?php endif; ?>
         </div>
-        <a class="btn btn-success" href="<?= \yii\helpers\Url::to(['site/page', 'id' => $page[0]]) ?>">Просмотр</a>
-        <a class="btn btn-info" href="<?= \yii\helpers\Url::to(['site/chat', 'id' => $page[0]]) ?>">Чат</a>
+        <a class="btn btn-success" href="<?= \yii\helpers\Url::to(['site/page', 'id' => $page['id']]) ?>">Просмотр</a>
+        <a class="btn btn-info" href="<?= \yii\helpers\Url::to(['site/chat', 'id' => $page['id']]) ?>">Чат</a>
     </div>
 <?php if (($key % 3) == 2):?>
 </div>

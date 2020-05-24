@@ -19,6 +19,7 @@
 -- Table structure for table `chat`
 --
 
+GRANT REPLICATION SLAVE ON *.* TO 'user'@'%';
 GRANT REPLICATION CLIENT ON *.* TO 'user'@'%';
 
 DROP TABLE IF EXISTS `chat`;
@@ -32,7 +33,7 @@ CREATE TABLE `chat` (
   `idrecipient` int(11) unsigned NOT NULL,
   PRIMARY KEY (`idchat`),
   KEY `in_chat$idauthor$idrecipient` (`idauthor`,`idrecipient`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -55,18 +56,8 @@ CREATE TABLE `migration` (
   `version` varchar(180) NOT NULL,
   `apply_time` int(11) DEFAULT NULL,
   PRIMARY KEY (`version`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `migration`
---
-
-LOCK TABLES `migration` WRITE;
-/*!40000 ALTER TABLE `migration` DISABLE KEYS */;
-INSERT INTO `migration` (`version`, `apply_time`) VALUES ('m000000_000000_base',1590322901),('m200108_111941_create_user_table',1590322904),('m200224_082615_create_posts_table',1590322905),('m200224_083619_create_subscriber_table',1590322905),('m200229_075441_add_subscribers',1590322906),('m200314_100919_create_chat_table',1590322906);
-/*!40000 ALTER TABLE `migration` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `posts`
@@ -81,7 +72,7 @@ CREATE TABLE `posts` (
   `iduser` int(11) unsigned NOT NULL,
   PRIMARY KEY (`idposts`),
   KEY `in_posts$iduser` (`iduser`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -104,7 +95,7 @@ CREATE TABLE `subscriber` (
   `idsubscriber` int(11) unsigned NOT NULL,
   `iduser` int(11) unsigned NOT NULL,
   PRIMARY KEY (`idsubscriber`,`iduser`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -128,7 +119,7 @@ CREATE TABLE `user` (
   `email` varchar(255) DEFAULT NULL COMMENT 'Email',
   `password` varchar(255) DEFAULT NULL COMMENT 'Пароль',
   `auth_key` varchar(255) DEFAULT NULL,
-  `access_token` varchar(255) DEFAULT NULL,
+  `access_token` varchar(255) DEFAULT '0',
   `surname` varchar(255) DEFAULT NULL COMMENT 'Фамилия',
   `first_name` varchar(255) DEFAULT NULL COMMENT 'Имя',
   `age` int(3) unsigned DEFAULT NULL COMMENT 'Возраст',
@@ -136,7 +127,7 @@ CREATE TABLE `user` (
   `interests` varchar(500) DEFAULT NULL COMMENT 'Интересы',
   `city` varchar(255) DEFAULT NULL COMMENT 'Город',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
