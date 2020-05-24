@@ -16,7 +16,7 @@ $config = [
         '@tests' => '@app/tests',
     ],
     'components' => [
-//        'cache' => $cache,
+        'cache' => $cache,
         'log' => [
             'targets' => [
                 [

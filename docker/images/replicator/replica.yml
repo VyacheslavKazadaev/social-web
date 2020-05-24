@@ -1,0 +1,21 @@
+mysql:
+  host: mariadb
+  port: 3306
+  user: user
+  password: user_password
+  replication_slave_id: 1
+
+tarantool:
+  host: tarantool
+  port: 3301
+  user: guest
+  password: ''
+
+mappings:
+  - database: social_web
+    table: user
+    columns: [ id, email, password, auth_key, access_token, surname, first_name, age, sex, interests, city ]
+    # target tarantool space has 4 columns, from MySQL, columns named 'id', 'name', 'email' and 'active' are mapped
+    space: UserCache
+    # for delete / update queries, index with fields `[ 2 ]` (email) is expected as unique primary index
+    key_fields: [ 0 ]

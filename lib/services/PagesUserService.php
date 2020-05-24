@@ -47,10 +47,10 @@ class PagesUserService extends BaseObject
             ->all();
     }
 
-    public function findPagesByQueryUnionFromTarantool($length, $q = null): array
+    public function findPagesByQueryUnionFromTarantool($length, $q): array
     {
         $client = Client::fromOptions([
-            'uri' => 'tcp://tarantool:3302',
+            'uri' => 'tcp://tarantool:3301',
             'persistent' => true,
         ]);
 
@@ -58,21 +58,17 @@ class PagesUserService extends BaseObject
             local ret = {}
             local limit = '.$length.'
             for _, tuple in box.space.UserCache.index.secondary_surname:pairs(prefix, {iterator = \'GE\'}) do
-              ' . ( isset($q) ? '
               if string.startswith(tuple[6], prefix, 1, -1) then
                 table.insert(ret, tuple)
               end
-              ' : '').'
               if table.maxn(ret) >= limit then
                 break
               end
             end
             for _, tuple in box.space.UserCache.index.secondary_first_name:pairs(prefix, {iterator = \'GE\'}) do
-              ' . ( isset($q) ? '
               if string.startswith(tuple[7], prefix, 1, -1) then
                 table.insert(ret, tuple)
               end
-              ' : '').'
               if table.maxn(ret) >= limit then
                 break
               end

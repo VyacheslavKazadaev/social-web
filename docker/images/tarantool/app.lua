@@ -1,6 +1,6 @@
 box.cfg {
 
-    slab_alloc_factor = 2;
+    -- slab_alloc_factor = 2;
     ------------------------
     -- Network configuration
     ------------------------
@@ -9,8 +9,8 @@ box.cfg {
     -- Has no default value, so must be specified if
     -- connections will occur from remote clients
     -- that do not use “admin address”
-    listen = 'localhost:3301';
-    -- listen = '*:3301';
+    -- listen = 'localhost:3301';
+    listen = '*:3301';
 
     -- The server is considered to be a Tarantool replica
     -- it will try to connect to the master
@@ -44,7 +44,7 @@ box.cfg {
 
     -- Size of the largest allocation unit, in bytes.
     -- It can be tuned up if it is necessary to store large tuples
-    memtx_max_tuple_size = 128 * 1024 * 1024 * 10; -- 128Mb
+    memtx_max_tuple_size = 128 * 1024 * 1024 * 20; -- 128Mb
 
     -- Reduce the throttling effect of box.snapshot() on
     -- INSERT/UPDATE/DELETE performance by setting a limit
@@ -84,7 +84,7 @@ box.cfg {
     -- "none": write-ahead log is not maintained;
     -- "write": fibers wait for their data to be written to the write-ahead log;
     -- "fsync": fibers wait for their data, fsync follows each write;
-    wal_mode = "none";
+    wal_mode = "write";
 
     -- The maximal size of a single write-ahead log file
     wal_max_size = 256 * 1024 * 1024;

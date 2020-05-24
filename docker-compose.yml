@@ -33,7 +33,7 @@ services:
     volumes:
       - ./:/var/www
     environment:
-      XDEBUG_CONFIG: "remote_host=192.168.240.1 remote_enable=1"
+      XDEBUG_CONFIG: "remote_host=192.168.230.1 remote_enable=1"
       PHP_IDE_CONFIG: "serverName=Docker"
       TZ: Europe/Moscow
     networks:
@@ -44,8 +44,8 @@ services:
       - "3307:3306"
     volumes:
       - ./docker/mysql:/var/lib/mysql
-#      - ./docker/mysql_dump:/docker-entrypoint-initdb.d
       - ./docker/images/mysql:/etc/mysql/conf.d
+      - ./docker/mysql_dump:/docker-entrypoint-initdb.d
     # задаем пароль для root пользователя
     environment:
       MYSQL_ROOT_PASSWORD: root_password
@@ -74,10 +74,18 @@ services:
       - "6380:6379"
     networks:
       - internal
+  replicator:
+    build: ./docker/images/replicator
+    privileged: true
+    volumes:
+      - ./docker/images/replicator/replica.yml:/opt/MariaDBReplica/replica.yml
+      - /sys/fs/cgroup:/sys/fs/cgroup
+    networks:
+      - internal
 networks:
   internal:
     driver: bridge
     ipam:
       driver: default
       config:
-        - subnet: 192.168.240.0/28
+        - subnet: 192.168.230.0/28
