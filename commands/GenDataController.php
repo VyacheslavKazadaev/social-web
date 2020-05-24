@@ -22,6 +22,7 @@ class GenDataController extends Controller
         $columns = [
             'email'        ,
             'password'     ,
+            'auth_key'     ,
             'surname'      ,
             'first_name'   ,
             'age'          ,
@@ -64,8 +65,9 @@ class GenDataController extends Controller
     {
         while ($count !== 0) {
             $row = [
-                'test@test.com',
+                $faker->firstName. '@test.com',
                 '$2y$13$VhkbB/erFT1Y8jULlqXDG.93BVrjhYLpCeOZoDBx0hM7HDvInMScO',
+                '0',
                 $faker->lastName,
                 $faker->firstName,
                 $faker->numberBetween(15, 100),
