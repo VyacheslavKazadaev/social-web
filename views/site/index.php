@@ -16,7 +16,7 @@ use yii\helpers\Html; ?>
         <p><?= $page['first_name'] . ' ' . $page['surname'] ?></p>
         <p>Город: <?= $page['city'] ?></p>
         <div>
-            <?php if (isset($subscribers)): ?>
+            <?php if (!empty($subscribers)): ?>
                 <?php if(array_search($page['id'], $subscribers) === false): ?>
                     <a href="#" onclick="return false;" class="subscribe" data-id="<?= $page['id'] ?>"><i class="fa fa-plus-square"></i>Подписаться</a>
                 <?php else:?>

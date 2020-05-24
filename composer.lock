@@ -4,14 +4,14 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f17c18892c62b11dc5b234f9aff92a6b",
+    "content-hash": "2a0d56829c7259fc5f104ab33feda001",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
             "version": "v3.4.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/twbs/bootstrap.git",
+                "url": "git@github.com:twbs/bootstrap.git",
                 "reference": "68b0d231a13201eb14acd3dc84e51543d16e5f7e"
             },
             "dist": {
@@ -32,7 +32,7 @@
             "version": "5.12.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/FortAwesome/Font-Awesome.git",
+                "url": "git@github.com:FortAwesome/Font-Awesome.git",
                 "reference": "d8db3d032d22e7a5e21f3b40905b7867be19bb02"
             },
             "dist": {
@@ -1292,6 +1292,58 @@
             "time": "2019-07-07T10:11:42+00:00"
         },
         {
+            "name": "rybakit/msgpack",
+            "version": "v0.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rybakit/msgpack.php.git",
+                "reference": "8ad636b575619aa34eee8b70c564de4717b5cb41"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rybakit/msgpack.php/zipball/8ad636b575619aa34eee8b70c564de4717b5cb41",
+                "reference": "8ad636b575619aa34eee8b70c564de4717b5cb41",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1.1"
+            },
+            "require-dev": {
+                "ext-decimal": "*",
+                "ext-gmp": "*",
+                "friendsofphp/php-cs-fixer": "^2.14",
+                "phpunit/phpunit": "^7.1|^8.0"
+            },
+            "suggest": {
+                "ext-decimal": "For converting overflowed integers to Decimal objects",
+                "ext-gmp": "For converting overflowed integers to GMP objects"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MessagePack\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Eugene Leonovich",
+                    "email": "gen.work@gmail.com"
+                }
+            ],
+            "description": "A pure PHP implementation of the MessagePack serialization format.",
+            "keywords": [
+                "messagepack",
+                "msgpack",
+                "pure",
+                "streaming"
+            ],
+            "time": "2020-01-27T23:31:20+00:00"
+        },
+        {
             "name": "swiftmailer/swiftmailer",
             "version": "v6.2.3",
             "source": {
@@ -1904,6 +1956,66 @@
                 "url"
             ],
             "time": "2020-02-04T08:04:52+00:00"
+        },
+        {
+            "name": "tarantool/client",
+            "version": "v0.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tarantool-php/client.git",
+                "reference": "73ce62471dd5df8698f7e80cc92b6a4e207877df"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tarantool-php/client/zipball/73ce62471dd5df8698f7e80cc92b6a4e207877df",
+                "reference": "73ce62471dd5df8698f7e80cc92b6a4e207877df",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1"
+            },
+            "require-dev": {
+                "ext-decimal": "*",
+                "ext-json": "*",
+                "ext-msgpack": "*",
+                "ext-sockets": "*",
+                "friendsofphp/php-cs-fixer": "^2.14",
+                "monolog/monolog": "^1.24|^2.0",
+                "phpunit/phpunit": "^7.1|^8|^9",
+                "psr/log": "^1.1",
+                "rybakit/msgpack": "^0.7",
+                "vimeo/psalm": "^3.9"
+            },
+            "suggest": {
+                "ext-decimal": "For using decimals with Tarantool 2.3+",
+                "ext-msgpack": "For using Pecl packer",
+                "psr/log": "For using LoggingMiddleware",
+                "rybakit/msgpack": "For using Pure packer (version 0.7 or above is required)"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Tarantool\\Client\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Eugene Leonovich",
+                    "email": "gen.work@gmail.com"
+                }
+            ],
+            "description": "PHP client for Tarantool.",
+            "keywords": [
+                "client",
+                "nosql",
+                "pure",
+                "tarantool"
+            ],
+            "time": "2020-03-26T23:33:47+00:00"
         },
         {
             "name": "yiisoft/yii2",

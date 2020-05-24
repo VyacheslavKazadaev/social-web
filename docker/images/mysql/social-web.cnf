@@ -1,0 +1,7 @@
+[mariadb]
+log-bin
+server-id=1
+log-basename=master1
+binlog_ignore_db = information_schema,mysql,test
+skip-bind-address
+binlog_format=ROW

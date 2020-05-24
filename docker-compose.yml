@@ -10,22 +10,22 @@ services:
       - "82:80"
     # монтируем директории, слева директории на основной машине, справа - куда они монтируются в контейнере
     volumes:
-      - ./docker/hosts:/etc/nginx/conf.d
-      - ./docker/hosts/fastcgi.conf:/etc/nginx/fastcgi.conf
+      - ./docker/images/nginx:/etc/nginx/conf.d
+      - ./docker/images/nginx/fastcgi.conf:/etc/nginx/fastcgi.conf
       - ./:/var/www
       - ./docker/logs:/var/log/nginx
     # nginx должен общаться с php контейнером
     links:
-      - php_soc_cl
+      - php_social_web
     networks:
       - internal
     depends_on:
-      - php_soc_cl
+      - php_social_web
       - mariadb
-  php_soc_cl:
+  php_social_web:
     # у нас свой образ для PHP, указываем путь к нему и говорим что его надо собрать
     build: ./docker/images/php
-    container_name: php_soc_cl
+    container_name: php_social_web
     # этот образ будет общаться с mysql
     links:
       - mariadb
@@ -33,7 +33,7 @@ services:
     volumes:
       - ./:/var/www
     environment:
-      XDEBUG_CONFIG: "remote_host=192.168.210.1 remote_enable=1"
+      XDEBUG_CONFIG: "remote_host=192.168.230.1 remote_enable=1"
       PHP_IDE_CONFIG: "serverName=Docker"
       TZ: Europe/Moscow
     networks:
@@ -41,11 +41,11 @@ services:
   mariadb:
     image: mariadb:10.4
     ports:
-      - "3308:3306"
+      - "3307:3306"
     volumes:
       - ./docker/mysql:/var/lib/mysql
-      - ./docker/mysql_dump:/docker-entrypoint-initdb.d
       - ./docker/images/mysql:/etc/mysql/conf.d
+      - ./docker/mysql_dump:/docker-entrypoint-initdb.d
     # задаем пароль для root пользователя
     environment:
       MYSQL_ROOT_PASSWORD: root_password
@@ -55,10 +55,37 @@ services:
       TZ: Europe/Moscow
     networks:
       - internal
+  tarantool:
+    image: tarantool/tarantool:1.x-centos7
+    container_name: tarantool_replica
+    command: ["tarantool", "/opt/tarantool/app.lua"]
+    volumes:
+      - ./docker/tarantool/lib:/var/lib/tarantool
+      - ./docker/images/tarantool/app.lua:/opt/tarantool/app.lua
+    ports:
+      - "3302:3301"
+    networks:
+      - internal
+  redis:
+    image: library/redis:latest
+    volumes:
+      - ./docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - "6380:6379"
+    networks:
+      - internal
+  replicator:
+    build: ./docker/images/replicator
+    privileged: true
+    volumes:
+      - ./docker/images/replicator/replica.yml:/opt/MariaDBReplica/replica.yml
+      - /sys/fs/cgroup:/sys/fs/cgroup
+    networks:
+      - internal
 networks:
   internal:
     driver: bridge
     ipam:
       driver: default
       config:
-        - subnet: 192.168.210.0/28
+        - subnet: 192.168.230.0/28

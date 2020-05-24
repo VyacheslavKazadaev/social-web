@@ -1,0 +1,33 @@
+<?php
+
+/* @var $this yii\web\View
+ * @var $pages array
+ * @var $subscribers array
+ */
+
+use yii\helpers\Html; ?>
+
+<?php foreach ($pages as $key => $page): ?>
+    <?php if (($key % 3) == 0):?>
+        <div class="row">
+    <?php endif; ?>
+    <div class="col-sm-3 pageuser text-center">
+        <img src="/img/avatar_2x.png" class="img-thumbnail"/>
+        <p><?= $page[6] . ' ' . $page[5] ?></p>
+        <p>Город: <?= $page[10] ?></p>
+        <div>
+            <?php if (!empty($subscribers)): ?>
+                <?php if(array_search($page[0], $subscribers) === false): ?>
+                    <a href="#" onclick="return false;" class="subscribe" data-id="<?= $page[0] ?>"><i class="fa fa-plus-square"></i>Подписаться</a>
+                <?php else:?>
+                    <span class="subscribe" data-id="<?= $page[0] ?>"><i class="fa fa-check"></i>Подписан</span>
+                <?php endif; ?>
+            <?php endif; ?>
+        </div>
+        <a class="btn btn-success" href="<?= \yii\helpers\Url::to(['site/page', 'id' => $page[0]]) ?>">Просмотр</a>
+        <a class="btn btn-info" href="<?= \yii\helpers\Url::to(['site/chat', 'id' => $page[0]]) ?>">Чат</a>
+    </div>
+    <?php if (($key % 3) == 2):?>
+        </div>
+    <?php endif; ?>
+<?php endforeach; ?>

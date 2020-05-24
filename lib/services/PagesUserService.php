@@ -4,8 +4,7 @@ namespace app\lib\services;
 
 use app\lib\helpers\DateHelper;
 use app\models\User;
-use app\queue\jobs\AddPostJob;
-use PhpAmqpLib\Connection\AMQPStreamConnection;
+use Tarantool\Client\Client;
 use Yii;
 use yii\base\BaseObject;
 use yii\db\Query;
@@ -46,6 +45,37 @@ class PagesUserService extends BaseObject
             ->from($queryOne)
             ->orderBy('first_name')
             ->all();
+    }
+
+    public function findPagesByQueryUnionFromTarantool($length, $q): array
+    {
+        $client = Client::fromOptions([
+            'uri' => 'tcp://tarantool:3301',
+            'persistent' => true,
+        ]);
+
+        $client->evaluate('function select_by_prefix(prefix)
+            local ret = {}
+            local limit = '.$length.'
+            for _, tuple in box.space.UserCache.index.secondary_surname:pairs(prefix, {iterator = \'GE\'}) do
+              if string.startswith(tuple[6], prefix, 1, -1) then
+                table.insert(ret, tuple)
+              end
+              if table.maxn(ret) >= limit then
+                break
+              end
+            end
+            for _, tuple in box.space.UserCache.index.secondary_first_name:pairs(prefix, {iterator = \'GE\'}) do
+              if string.startswith(tuple[7], prefix, 1, -1) then
+                table.insert(ret, tuple)
+              end
+              if table.maxn(ret) >= limit then
+                break
+              end
+            end
+            return ret
+        end');
+        return $client->evaluate('return select_by_prefix(...)', $q)[0];
     }
 
     public function findSubscribeUsers($id)
