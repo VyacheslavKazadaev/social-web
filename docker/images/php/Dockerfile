@@ -30,6 +30,16 @@ RUN docker-php-ext-configure gd \
     && docker-php-ext-install -j$(nproc) gd mbstring mysqli pdo_mysql zip soap json xsl xml intl curl \
     && pecl install xdebug imagick \
     && docker-php-ext-enable imagick xdebug
+RUN  apt-get update -y && apt-get install -y \
+       librabbitmq-dev \
+       libssh-dev \
+    && docker-php-ext-install \
+        bcmath \
+        sockets \
+    && pecl install amqp \
+    && docker-php-ext-enable amqp
+RUN    rm -rf /var/lib/apt/lists/* \
+    && apt-get clean -y
 
 # Куда же без composer'а.
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer

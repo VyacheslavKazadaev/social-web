@@ -25,7 +25,8 @@
         "consik/yii2-websocket": "1.0.1",
         "mikemadisonweb/yii2-rabbitmq": "2.2.1",
         "tarantool/client": "v0.7.0",
-        "rybakit/msgpack": "v0.7.0"
+        "rybakit/msgpack": "v0.7.0",
+        "php-amqplib/php-amqplib": "2.11.3"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
