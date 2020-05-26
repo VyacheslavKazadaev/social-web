@@ -11,7 +11,7 @@ return $db + [
     'class' => 'yii\db\Connection',
     'dsn' => 'mysql:host=localhost;dbname=social_web',
     'username' => 'root',
-    'password' => '',
+    'password' => 'root_password',
     'charset' => 'utf8',
 
     // Schema cache options (for production environment)
