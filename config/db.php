@@ -9,7 +9,7 @@ if (file_exists($ovDB)) {
 
 return $db + [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=social_web',
+    'dsn' => 'mysql:host=mariadb;dbname=social_web',
     'username' => 'root',
     'password' => 'root_password',
     'charset' => 'utf8',
