@@ -54,28 +54,31 @@ class PagesUserService extends BaseObject
             'persistent' => true,
         ]);
 
-        $client->evaluate('function select_by_prefix(prefix)
+        $client->evaluate('function select_by_prefix(prefix, len)
             local ret = {}
-            local limit = '.$length.'
+            local hash = {}
             for _, tuple in box.space.UserCache.index.secondary_surname:pairs(prefix, {iterator = \'GE\'}) do
               if string.startswith(tuple[6], prefix, 1, -1) then
                 table.insert(ret, tuple)
+                hash[tuple[1]] = true
               end
-              if table.maxn(ret) >= limit then
+              if table.maxn(ret) >= len then
                 break
               end
             end
             for _, tuple in box.space.UserCache.index.secondary_first_name:pairs(prefix, {iterator = \'GE\'}) do
               if string.startswith(tuple[7], prefix, 1, -1) then
-                table.insert(ret, tuple)
+                if (not hash[tuple[1]]) then
+                  table.insert(ret, tuple)
+                end
               end
-              if table.maxn(ret) >= limit then
+              if table.maxn(ret) >= len then
                 break
               end
             end
             return ret
         end');
-        return $client->evaluate('return select_by_prefix(...)', $q)[0];
+        return $client->evaluate('return select_by_prefix(...)', $q, $length)[0] ?? [];
     }
 
     public function findSubscribeUsers($id)
